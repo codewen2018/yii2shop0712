@@ -47,4 +47,6 @@ return [
 
     ],
     'params' => $params,
+    'name'=>'京西商城',
+
 ];

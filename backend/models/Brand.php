@@ -20,7 +20,7 @@ class Brand extends \yii\db\ActiveRecord
     //状态文字
     public static $statusText=['-1'=>'删除','0'=>'隐藏','1'=>'显示'];
     //表单里的图片字段 不是数据库里字段
-    public $imgFile;
+
 
     /**
      * @inheritdoc
@@ -36,11 +36,12 @@ class Brand extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','logo'], 'required'],
             [['sort', 'status'], 'integer'],
             [['name'], 'string', 'max' => 30],
             [['intro'], 'string', 'max' => 255],
-            [['imgFile'],'file','extensions' => ['gif','jpg','png'],'skipOnEmpty' => true]
+            [['name'],'unique']
+         //   [['imgFile'],'file','extensions' => ['gif','jpg','png'],'skipOnEmpty' => true]
         //    [['logo'], 'string', 'max' => 100],
         ];
     }
@@ -59,4 +60,22 @@ class Brand extends \yii\db\ActiveRecord
             'status' => '状态',
         ];
     }
+
+     public function getImage(){
+
+        if (substr($this->logo,0,7)=="http://"){
+
+            return $this->logo;
+        }else{
+
+
+            return "@web/".  $this->logo;
+        }
+
+
+
+
+
+     }
+
 }

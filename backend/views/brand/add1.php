@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\web\JsExpression;
-
+use xj\uploadify\Uploadify;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Brand */
@@ -17,8 +17,10 @@ use yii\web\JsExpression;
         <?= $form->field($model, 'sort') ?>
         <?= $form->field($model, 'status')->radioList(\backend\models\Brand::$statusText) ?>
 
-       <?= $form->field($model,'logo')->widget('manks\FileInput', []);
-       ?>
+
+
+       <?=$form->field($model, 'file1')->widget('manks\FileInput', [
+       ]); ?>
 
 
 

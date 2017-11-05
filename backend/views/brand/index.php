@@ -18,7 +18,7 @@
         <tr>
             <td><?=$brand->id?></td>
             <td><?=$brand->name?></td>
-            <td><?=\yii\bootstrap\Html::img("@web/".$brand->logo,['height'=>100])?></td>
+            <td><?=\yii\bootstrap\Html::img($brand->image,['height'=>100])?></td>
             <td><?=$brand->sort?></td>
             <td><?=$brand->status?></td>
             <td>
@@ -35,5 +35,5 @@
 
 
     <?php endforeach;?>
-    
+
 </table>
