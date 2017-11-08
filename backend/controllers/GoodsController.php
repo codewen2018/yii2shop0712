@@ -50,7 +50,7 @@ class GoodsController extends \yii\web\Controller
             $query->andWhere("name like '%{$keyword}%' or sn like '%{$keyword}%'");
         }
 
-        //
+        //判断0和1的情况必需用三等号
         if ($status ==="1" or $status==="0"){
 
             $query->andWhere("status= {$status}");
