@@ -92,7 +92,8 @@ class BrandController extends \yii\web\Controller
         ];
         //实例化对象
         $qiniu = new Qiniu($config);
-        $key = time();
+        $key = uniqid();//生成一个唯一数
+        $key=microtime(true);
         //调用上传方法
         $qiniu->uploadFile($_FILES["file"]['tmp_name'],$key);
         $url = $qiniu->getLink($key);
