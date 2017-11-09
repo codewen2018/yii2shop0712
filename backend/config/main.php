@@ -17,9 +17,10 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \backend\models\Admin::className(),//用哪个模型类来实现用户操作
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'loginUrl' => "admin/login"
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend

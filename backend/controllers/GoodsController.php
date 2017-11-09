@@ -261,5 +261,8 @@ class GoodsController extends \yii\web\Controller
         return $this->redirect("index");
   }
 
+  public function actionInd(){
+
+  }
 
 }

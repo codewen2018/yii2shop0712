@@ -23,5 +23,19 @@ class TestController extends Controller
 
     }
 
+    public function actionTest()
+    {
+
+        $str1="wo@iphp@3432";
+        $str2=rand(100000,999999);
+        echo md5($str1.'123456'.time());
+        echo "<br>";
+        $str2=rand(100000,999999);
+        echo md5($str1.'123456'.$str2);
+
+
+
+    }
+
 
 }
