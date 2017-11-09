@@ -44,9 +44,11 @@ class Goods extends \yii\db\ActiveRecord
             [['name', 'sn'], 'string', 'max' => 20],
             [['logo'], 'string', 'max' => 255],
             [['sn'], 'unique'],
-            [['sn','imgFiles'],'safe']
+            [['sn','imgFiles'],'safe'],
         ];
     }
+
+
 
     /**
      * @inheritdoc

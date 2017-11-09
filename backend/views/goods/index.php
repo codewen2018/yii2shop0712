@@ -27,13 +27,14 @@
         $searchForm=new \backend\models\GoodsSearchForm();
         $form=\yii\bootstrap\ActiveForm::begin([
                 'method' => 'get',
+                'action' => ['index'],
                 'options' => ['class'=>"form-inline pull-right"]
         ]);
-        echo $form->field($searchForm,'minPrice')->label(false)->textInput(['size'=>5]);
+        echo $form->field($searchForm,'minPrice')->label(false)->textInput(['size'=>5,'name'=>'minPrice']);
         echo "-";
-        echo $form->field($searchForm,'maxPrice')->label(false)->textInput(['size'=>5,'placeholder'=>"最高价"]);
+        echo $form->field($searchForm,'maxPrice')->label(false)->textInput(['size'=>5,'placeholder'=>"最高价",'name'=>'maxPrice']);
         echo " ";
-        echo $form->field($searchForm,'keyword')->label(false);
+        echo $form->field($searchForm,'keyword')->label(false)->textInput(['name'=>'keyword']);
         echo " ";
         echo \yii\bootstrap\Html::submitButton("搜索",['class'=>'btn btn-success','style'=>"margin-bottom:8px"]);
 
