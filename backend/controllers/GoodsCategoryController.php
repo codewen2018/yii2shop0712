@@ -234,8 +234,6 @@ class GoodsCategoryController extends \yii\web\Controller
         $cates= ArrayHelper::map($cates,'id','nameText');
         $cates=ArrayHelper::merge(['0'=>'顶级分类'],$cates);
        // $cates=Json::encode($cates);
-
-
         // var_dump($cates);exit;
 
         //显示视图

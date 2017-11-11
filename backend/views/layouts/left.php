@@ -33,12 +33,23 @@
                     ['label' => '商品模块', 'options' => ['class' => 'header']],
                     [
                             'label' => '品牌管理',
-                        'icon' => 'file-code-o',
+                        'icon' => 'fighter-jet',
                         'url' => "#",
                         'items'=>[
-                            ['label' => '添加品牌', 'icon' => 'file-code-o', 'url' => ['brand/add'],],
-                            ['label' => '品牌列表', 'icon' => 'dashboard', 'url' => ['brand/index'],],
-                        ]
+                            [
+                                    'label' => '添加品牌',
+                                'icon' => 'file-code-o',
+                                'url' => ['brand/add'],
+                                'visible'=>Yii::$app->user->can('brand/add')
+                                ],
+                            [
+                                    'label' => '品牌列表',
+                                'icon' => 'dashboard',
+                                'url' => ['brand/index'],
+                                'visible'=>Yii::$app->user->can('brand/index')
+                                ],
+                        ],
+                        'visible'=>Yii::$app->user->can('brand')
                     ],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],

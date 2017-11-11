@@ -24,6 +24,13 @@ class AdminController extends \yii\web\Controller
         $admin->auth_key=\Yii::$app->security->generateRandomString();
         $admin->save();
 
+        //找到角色对象
+        $auth=\Yii::$app->authManager;
+        //找到admin角色
+        $role=$auth->getRole('admin');
+        //把当前用户对象追加到admin角中
+        $auth->assign($role,$admin->id);
+
         \Yii::$app->session->setFlash("success",'注册成功');
        // \Yii::$app->user->login($admin,3600*24*7);
         return $this->redirect(['index']);
