@@ -30,6 +30,8 @@ class AdminController extends \yii\web\Controller
         $role=$auth->getRole('admin');
         //把当前用户对象追加到admin角中
         $auth->assign($role,$admin->id);
+        //取消当前用户所有角色
+       // $auth->revokeAll($admin->id);
 
         \Yii::$app->session->setFlash("success",'注册成功');
        // \Yii::$app->user->login($admin,3600*24*7);

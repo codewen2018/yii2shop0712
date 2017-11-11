@@ -10,6 +10,7 @@
 namespace backend\controllers;
 
 
+use backend\components\RbacMenu;
 use yii\web\Controller;
 
 class TestController extends Controller
@@ -17,8 +18,8 @@ class TestController extends Controller
 
     public function actionIndex(){
 
-
-        return $this->render('index');
+         RbacMenu::Menu();
+       // return $this->render('index');
 
 
     }

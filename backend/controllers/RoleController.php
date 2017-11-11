@@ -89,8 +89,9 @@ class RoleController extends \yii\web\Controller
         //通过角色得到角色的所有权限
          $rolePermission=$authManager->getPermissionsByRole($name);
          //取数组所有键
-         //var_dump(array_keys($rolePermission));exit;
-        $model->permissions=array_keys($rolePermission);
+        // var_dump(array_keys($rolePermission));exit;
+       $model->permissions=array_keys($rolePermission);
+        //$model->permissions=[0=>'brand',1=>'brand/add'];
         $request=\Yii::$app->request;
         if ($model->load($request->post()) && $model->validate()){
 
