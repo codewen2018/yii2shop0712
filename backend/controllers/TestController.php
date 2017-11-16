@@ -13,6 +13,10 @@ namespace backend\controllers;
 use backend\components\RbacMenu;
 use backend\models\Me;
 use yii\web\Controller;
+use Flc\Alidayu\Client;
+use Flc\Alidayu\App;
+use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;
+use Flc\Alidayu\Requests\IRequest;
 
 class TestController extends Controller
 {
@@ -79,25 +83,38 @@ class TestController extends Controller
                     $menu['items'][] = [
                         'label' => $child->name,
                         'icon' => 'circle-o',
-                        'url' => "/".$child->url,
-                       // 'visible' => \Yii::$app->user->can($child->url)
+                        'url' => "/" . $child->url,
+                        // 'visible' => \Yii::$app->user->can($child->url)
                     ];
                 }
 
 
-            }else{
-                $menu['visible']=false;
+            } else {
+                $menu['visible'] = false;
             }
-            $menu['visible']=true;
+            $menu['visible'] = true;
 
 
-            $menuArr[]=$menu;
+            $menuArr[] = $menu;
 
         }
-      //  [\backend\controllers\TestController::actionMenu(),\backend\controllers\TestController::actionMenu(),]
+        //  [\backend\controllers\TestController::actionMenu(),\backend\controllers\TestController::actionMenu(),]
         return $menuArr;
 
     }
 
+    public function actionSms()
+    {
+        $alidayu = \Yii::createObject([
+            'class' => 'chocoboxxf\Alidayu\Alidayu',
+            'appKey' => 'LTAIZtnogmyPTgk0', // 淘宝开发平台App Key
+            'appSecret' => '0ha8kjuh1NZ6gODvjySuGGR2xFee2z', // 淘宝开发平台App Secret
+            'partnerKey' => 'PARTNER_NAME_AXN', // 阿里大鱼提供的第三方合作伙伴使用的KEY
+            'env' => 'sandbox', // 使用环境，分sandbox（测试环境）, production（生产环境）
+        ]);
+// 调用短信发送接口示例
+        $result = $alidayu->smsSend('18584563931', 'SMS_110560035', '老文', 'normal', ['code' => '111111'], '100000');
 
+        var_dump($result);
+    }
 }

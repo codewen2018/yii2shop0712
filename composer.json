@@ -27,7 +27,8 @@
         "kucha/ueditor": "*",
         "dmstr/yii2-adminlte-asset": "^2.5",
         "p2made/yii2-sb-admin-theme": "^2.5",
-        "mdmsoft/yii2-admin": "~2.0"
+        "mdmsoft/yii2-admin": "~2.0",
+        "mrgoon/aliyun-sms": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
