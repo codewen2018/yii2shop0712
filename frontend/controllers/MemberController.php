@@ -10,18 +10,27 @@ class MemberController extends \yii\web\Controller
 
     public $layout="login";
     public $enableCsrfValidation=false;
+
+    /**
+     * 用户注册
+     */
     public function actionReg()
     {
         $model=new Member();
         $request=\Yii::$app->request;
         if ($request->isPost){
-
             $model->load($request->post());
             if ($model->validate()){
 
-               exit("ok");
-            }else{
-                var_dump($model->getErrors());exit;
+                $model->auth_key=\Yii::$app->security->generateRandomString();
+                //加密密码
+                $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password);
+                //IP
+                $model->last_login_ip=ip2long($request->userIP);
+
+                if($model->save()){
+                    return $this->redirect(['index/index']);
+                }
 
             }
 
@@ -32,6 +41,54 @@ class MemberController extends \yii\web\Controller
         return $this->render('reg',compact('model'));
     }
 
+    /**
+     * 用户登录
+     */
+    public function actionLogin()
+    {
+        $model=new Member();
+
+        $request=\Yii::$app->request;
+        if ($request->isPost){
+
+            $model->load($request->post());
+            //找到当前用户
+            $member=Member::findOne(['username'=>$model]);
+
+            //如果有用户
+            if ($member){
+            //判断密码
+                if (\Yii::$app->security->validatePassword($model->password,$member->password_hash)){
+                    //登录用户
+                    \Yii::$app->user->login($member);
+
+                    return $this->redirect(['index']);
+
+                }else{
+
+                    echo "<script>alert('密码错误');window.history.back();</script>";
+
+
+                }
+
+
+            }else{
+
+
+                echo "<script>alert('用户名错误');window.history.back();</script>";
+
+            }
+
+
+
+
+        }
+        return $this->render('login',compact('model'));
+
+    }
+    /**
+     * 短信验证
+     */
     public function actionSms(){
 
        // $this->enableCsrfValidation=false;
