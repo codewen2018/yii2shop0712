@@ -3257,7 +3257,8 @@ $(function() {
         });
     $("#choosePro").after(sb.toString());
 
-}); // 省值变化时 处理市
+});
+// 省值变化时 处理市
 function doProvAndCityRelation() {
     var city = $("#citys");
     var county = $("#county");
@@ -3276,14 +3277,14 @@ function doProvAndCityRelation() {
     var sb = new StringBuffer();
     $.each(cityJson,
         function(i, val) {
-            if (val.item_code.substr(0, 2) == $("#province").val().substr(0, 2) && val.item_code.substr(2, 4) != '0000' && val.item_code.substr(4, 2) == '00') {
-                sb.append("<option value='" + val.item_code + "'>" + val.item_name + "</option>");
+            if (val.item_code.substr(0, 2) == $("#province option:selected").attr('data_code').substr(0, 2) && val.item_code.substr(2, 4) != '0000' && val.item_code.substr(4, 2) == '00') {
+                sb.append("<option data_code='" + val.item_code + "'>" + val.item_name + "</option>");
             }
         });
     $("#chooseCity").after(sb.toString());
 } // 市值变化时 处理区/县
 function doCityAndCountyRelation() {
-    var cityVal = $("#citys").val();
+    var cityVal = $("#citys option:selected").attr("data_code");
     var county = $("#county");
     if (county.children().length > 1) {
         county.empty();
@@ -3296,11 +3297,11 @@ function doCityAndCountyRelation() {
         function(i, val) {
             if (cityVal == '110100' || cityVal == "120100" || cityVal == "310100" || cityVal == "500100") {
                 if (val.item_code.substr(0, 3) == cityVal.substr(0, 3) && val.item_code.substr(4, 2) != '00') {
-                    sb.append("<option value='" + val.item_code + "'>" + val.item_name + "</option>");
+                    sb.append("<option>" + val.item_name + "</option>");
                 }
             } else {
                 if (val.item_code.substr(0, 4) == cityVal.substr(0, 4) && val.item_code.substr(4, 2) != '00') {
-                    sb.append("<option value='" + val.item_code + "'>" + val.item_name + "</option>");
+                    sb.append("<option>" + val.item_name + "</option>");
                 }
             }
         });
