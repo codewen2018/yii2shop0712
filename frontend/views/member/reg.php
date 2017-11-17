@@ -15,6 +15,7 @@
                             'fieldConfig' => [
                                     'options'=>['tag'=>'li'],
                                      'errorOptions'=>['tag'=>'p'],
+
                             ]
 
 
@@ -23,6 +24,28 @@
             echo "<ul>";
             echo $form->field($model,"username")->textInput(['class'=>'txt'])->label("用户名：");
             echo $form->field($model,"password")->textInput(['class'=>'txt']);
+            echo $form->field($model,'rePassword')->passwordInput(['class'=>'txt']);
+            echo $form->field($model,'email')->textInput(['class'=>'txt']);
+            echo $form->field($model,'mobile')->textInput(['class'=>'txt']);
+            $button =  '<input type="button" id="get_captcha" value="获取验证码" style="height: 25px;padding:3px 8px;margin-left: 10px">';
+            echo $form->field($model,'smsCode',[
+                'template'=>"{label}\n{input}$button\n{hint}\n{error}",//输出模板
+            ])->textInput(['class'=>'txt','style'=>'width:100px','disabled'=>'disabled']);
+            echo $form->field($model,'code',[
+                'options'=>['class'=>'checkcode']
+            ])->widget(
+                \yii\captcha\Captcha::className(),[
+                    'template'=>'{input}{image}',
+                ]
+            );
+
+
+
+
+
+            echo $form->field($model,'checked')->hint("我已阅读并同意《用户注册协议》")->checkbox(['class'=>'chb']);
+
+            echo '<li><label for="">&nbsp;</label>'.\yii\helpers\Html::submitButton('',['class'=>'login_btn']).'</li>';
 
             echo "</ul>";
 
@@ -57,11 +80,11 @@
                         <label for="">手机号码：</label>
                         <input type="text" class="txt" value="" name="tel" id="tel" placeholder=""/>
                     </li>
-                    <li>
+               <!--     <li>
                         <label for="">验证码：</label>
                         <input type="text" class="txt" value="" placeholder="请输入短信验证码" name="captcha" disabled="disabled" id="captcha"/> <input type="button" onclick="bindPhoneNum(this)" id="get_captcha" value="获取验证码" style="height: 25px;padding:3px 8px"/>
 
-                    </li>
+                    </li>-->
                     <li class="checkcode">
                         <label for="">验证码：</label>
                         <input type="text"  name="checkcode" />
@@ -91,3 +114,69 @@
 
     </div>
 </div>
+<?php
+
+$url=\yii\helpers\Url::to(['member/sms']);
+$js=<<<EOF
+$("#get_captcha").click(function(){
+var mobile=$("#member-mobile").val();
+
+if(!mobile){
+alert("手机号必填");
+return
+}
+
+
+
+//>1.发AJax请求发送短信
+$.post("{$url}",{"mobile":mobile},function(data){
+console.log(data);
+});
+ //启用输入框
+        $('#member-smscode').prop('disabled',false);
+
+        var time=30;
+        var interval = setInterval(function(){
+            time--;
+            if(time<=0){
+                clearInterval(interval);
+                var html = '获取验证码';
+                $('#get_captcha').prop('disabled',false);
+            } else{
+                var html = time + ' 秒后再次获取';
+                $('#get_captcha').prop('disabled',true);
+            }
+
+            $('#get_captcha').val(html);
+        },1000);
+
+});
+
+EOF;
+
+
+$this->registerJs($js);
+
+?>
+
+<script type="text/javascript">
+    function bindPhoneNum(){
+        //启用输入框
+        $('#member-smscode').prop('disabled',false);
+
+        var time=30;
+        var interval = setInterval(function(){
+            time--;
+            if(time<=0){
+                clearInterval(interval);
+                var html = '获取验证码';
+                $('#get_captcha').prop('disabled',false);
+            } else{
+                var html = time + ' 秒后再次获取';
+                $('#get_captcha').prop('disabled',true);
+            }
+
+            $('#get_captcha').val(html);
+        },1000);
+    }
+</script>

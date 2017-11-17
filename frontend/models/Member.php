@@ -3,6 +3,7 @@
 namespace frontend\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 
 /**
@@ -24,12 +25,17 @@ use yii\web\IdentityInterface;
 class Member extends \yii\db\ActiveRecord implements IdentityInterface
 {
     public $password;
+    public $rePassword;
+    public $smsCode;
+    public $code;
+    public $checked;
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'member';
+
     }
 
     /**
@@ -38,14 +44,40 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password', 'email', 'created_at', 'updated_at'], 'required'],
-            [['status', 'created_at', 'updated_at', 'last_login_ip', 'last_login_time'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
-            [['auth_key'], 'string', 'max' => 32],
-            [['mobile'], 'string', 'max' => 20],
+            [['username', 'password', 'email','mobile','rePassword','smsCode'], 'required'],
             [['username'], 'unique'],
-            [['email'], 'unique'],
-            [['password_reset_token'], 'unique'],
+            [['mobile'], 'match', 'pattern' => '/^(13|14|15|18|17)[0-9]{9}$/','message' => '手机号错误'],
+            ['rePassword','compare','compareAttribute' => 'password'],
+          ['smsCode','validateCode']
+           // ['smsCode','compare','compareValue' => Yii::$app->session->get("tel_".$this->mobile)]
+        ];
+    }
+    public function validateCode($attribute, $params)
+    {
+      //  if (!$this->hasErrors()) {
+
+            //把存在Session中的验证码取出来 和当前的对比
+            $code=Yii::$app->session->get("tel_".$this->mobile);
+
+            if ($this->smsCode!=$code){
+                $this->addError($attribute, '验证码错误');
+            }
+            /*$user = $this->getUser();
+            if (!$user || !$user->validatePassword($this->password)) {
+                $this->addError($attribute, 'Incorrect username or password.');
+            }*/
+       // }
+    }
+    public function behaviors()
+    {
+        return [
+            [
+                'class'=>TimestampBehavior::className(),
+                'attributes' =>[
+                    self::EVENT_BEFORE_INSERT=>['created_at','updated_at'],
+                    self::EVENT_BEFORE_UPDATE=>['updated_at']
+                ]
+            ]
         ];
     }
 
@@ -67,6 +99,9 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             'last_login_ip' => 'IP地址',
             'last_login_time' => '最后登录时间',
             'mobile' => '手机',
+            'checked'=>'',
+            'password'=>'密码',
+            'rePassword'=>'确认密码'
         ];
     }
 

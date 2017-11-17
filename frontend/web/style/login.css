@@ -16,7 +16,7 @@
 .login_form .checkcode input{width: 100px; height: 20px; padding: 5px; border: 1px solid #ccc;}
 .login_form .checkcode img{width: 150px; height: 36px; vertical-align: top;}
 .login_form  a{color: #005aa0;}
-.login_form .chb{position: relative; top:2px; left: 2px;}
+.login_form .chb{position: relative; top:-4px; left: -2px;}
 
 .login_btn{width: 307px; height: 34px; border: 0; background: url("../images/login_img.png") 0 0 no-repeat; cursor: pointer;}
 .login_btn:hover{background-position: 0 -34px;}

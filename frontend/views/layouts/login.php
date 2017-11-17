@@ -79,27 +79,7 @@ LoginAsset::register($this);
 </div>
 <!-- 底部版权 end -->
 <!--<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>-->
-<script type="text/javascript">
-    function bindPhoneNum(){
-        //启用输入框
-        $('#captcha').prop('disabled',false);
 
-        var time=30;
-        var interval = setInterval(function(){
-            time--;
-            if(time<=0){
-                clearInterval(interval);
-                var html = '获取验证码';
-                $('#get_captcha').prop('disabled',false);
-            } else{
-                var html = time + ' 秒后再次获取';
-                $('#get_captcha').prop('disabled',true);
-            }
-
-            $('#get_captcha').val(html);
-        },1000);
-    }
-</script>
 <?php $this->endBody() ?>
 </body>
 </html>

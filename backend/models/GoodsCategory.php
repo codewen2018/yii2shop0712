@@ -92,4 +92,11 @@ class GoodsCategory extends \yii\db\ActiveRecord
         return str_repeat("-",4*$this->depth).$this->name;
     }
 
+    public function getChildren(){
+
+       return $this->hasMany(self::className(),['parent_id'=>'id']);
+       // return self::find()->where(['parent_id'=>$this->id])->all();
+
+    }
+
 }
