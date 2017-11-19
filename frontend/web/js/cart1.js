@@ -3,17 +3,29 @@
 @作者：diamondwang
 @时间：2013年11月14日
 */
+function changeCart(id,num) {
+
+	$.post('/home1/change-cart',{id:id,num:num,"_csrf-frontend":$("#csrf").val()},function (data) {
+		console.log(data);
+    });
+}
 
 $(function(){
-	
+
 	//减少
 	$(".reduce_num").click(function(){
+
+
 		var amount = $(this).parent().find(".amount");
+
 		if (parseInt($(amount).val()) <= 1){
 			alert("商品数量最少为1");
+
 		} else{
 			$(amount).val(parseInt($(amount).val()) - 1);
 		}
+        changeCart($(this).parent().parent().attr('id'),$(amount).val());
+        // changeCart($(this).parent().attr('goods_id'),$(amount).val());
 		//小计
 		var subtotal = parseFloat($(this).parent().parent().find(".col3 span").text()) * parseInt($(amount).val());
 		$(this).parent().parent().find(".col5 span").text(subtotal.toFixed(2));
@@ -29,7 +41,9 @@ $(function(){
 	//增加
 	$(".add_num").click(function(){
 		var amount = $(this).parent().find(".amount");
+
 		$(amount).val(parseInt($(amount).val()) + 1);
+        // changeCart($(this).parent().attr('goods_id'),$(amount).val());
 		//小计
 		var subtotal = parseFloat($(this).parent().parent().find(".col3 span").text()) * parseInt($(amount).val());
 		$(this).parent().parent().find(".col5 span").text(subtotal.toFixed(2));
@@ -48,6 +62,7 @@ $(function(){
 			alert("商品数量最少为1");
 			$(this).val(1);
 		}
+         changeCart($(this).parent().parent().attr('id'),$(this).val());
 		//小计
 		var subtotal = parseFloat($(this).parent().parent().find(".col3 span").text()) * parseInt($(this).val());
 		$(this).parent().parent().find(".col5 span").text(subtotal.toFixed(2));

@@ -71,4 +71,14 @@ class Goods extends \yii\db\ActiveRecord
             'create_at' => 'Create At',
         ];
     }
+
+    public function getIntro(){
+
+        return $this->hasOne(GoodsIntro::className(),['goods_id'=>'id']);
+
+    }
+
+    public function getGallery(){
+        return $this->hasMany(GoodsGallery::className(),['goods_id'=>'id']);
+    }
 }

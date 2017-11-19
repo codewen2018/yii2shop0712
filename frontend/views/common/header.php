@@ -1,39 +1,9 @@
+<?php
+use yii\helpers\Html;
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>京西商城</title>
-    <link rel="stylesheet" href="/style/base.css" type="text/css">
-    <link rel="stylesheet" href="/style/global.css" type="text/css">
-    <link rel="stylesheet" href="/style/header.css" type="text/css">
-    <link rel="stylesheet" href="/style/index.css" type="text/css">
-    <link rel="stylesheet" href="/style/bottomnav.css" type="text/css">
-    <link rel="stylesheet" href="/style/footer.css" type="text/css">
-
-    <script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="/js/header.js"></script>
-    <script type="text/javascript" src="/js/index.js"></script>
-</head>
-<body>
+?>
 <!-- 顶部导航 start -->
-<div class="topnav">
-    <div class="topnav_bd w1210 bc">
-        <div class="topnav_left">
-
-        </div>
-        <div class="topnav_right fr">
-            <ul>
-                <li>您好，欢迎来到京西！[<a href="/login.html">登录</a>] [<a href="/register.html">免费注册</a>] </li>
-                <li class="line">|</li>
-                <li>我的订单</li>
-                <li class="line">|</li>
-                <li>客户服务</li>
-
-            </ul>
-        </div>
-    </div>
-</div>
+<?php include_once Yii::getAlias("@app/views/common/nav.php")?>
 <!-- 顶部导航 end -->
 
 <div style="clear:both;"></div>
@@ -130,12 +100,43 @@
     <!-- 导航条部分 start -->
     <div class="nav w1210 bc mt10">
         <!--  商品分类部分 start-->
+        <div class="category fl <?=Yii::$app->controller->route=="home1/index"?"":"cat1"?>"> <!-- 非首页，需要添加cat1类 -->
+            <div class="cat_hd">  <!-- 注意，首页在此div上只需要添加cat_hd类，非首页，默认收缩分类时添加上off类，鼠标滑过时展开菜单则将off类换成on类 -->
+                <h2>全部商品分类</h2>
+                <em></em>
+            </div>
+
+            <div class="cat_bd <?=Yii::$app->controller->route=="home1/index"?"":"none"?>">
+
+                <?php foreach (\backend\models\GoodsCategory::find()->where(['parent_id'=>0])->all()  as $k1=>$v1):?>
+                <div class="cat item1">
+                    <h3><?=Html::a($v1->name,['list','id'=>$v1->id])?> <b></b></h3>
+                    <div class="cat_detail <?=empty($v1->children)?"none":""?>">
+                    <?php foreach ($v1->children as $k2=>$v2):?>
+
+                        <dl <?=$k2==0?'class="dl_1st"':""?>>
+                            <dt><?=Html::a($v2->name,['list','id'=>$v2->id])?></dt>
+                            <dd>
+                        <?php foreach ($v2->children as $k3=>$v3):?>
+                            <?=Html::a($v3->name,['list','id'=>$v3->id])?>
+                        <?php endforeach;?>
+                            </dd>
+                        </dl>
 
 
-<!--        商品分类挂件-->
-            <?=\frontend\widgets\GoodsCateWidget::widget(['isIndex' => Yii::$app->controller->route=="index/index"])?>
 
 
+
+
+                    <?php endforeach;?>
+                    </div>
+                </div>
+
+
+<?php endforeach;?>
+            </div>
+
+        </div>
         <!--  商品分类部分 end-->
 
         <div class="navitems fl">
@@ -154,19 +155,3 @@
     <!-- 导航条部分 end -->
 </div>
 <!-- 头部 end-->
-
-<div style="clear:both;"></div>
-
-<?=$content?>
-<div style="clear:both;"></div>
-
-<!-- 底部导航 start -->
-<?=\frontend\widgets\HelpWidget::widget()?>
-<!-- 底部导航 end -->
-<div style="clear:both;"></div>
-<!-- 底部版权 start -->
-<?=\frontend\widgets\FootWidget::widget()?>
-<!-- 底部版权 end -->
-
-</body>
-</html>

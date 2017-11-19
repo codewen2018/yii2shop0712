@@ -48,8 +48,9 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['mobile'], 'match', 'pattern' => '/^(13|14|15|18|17)[0-9]{9}$/','message' => '手机号错误'],
             ['rePassword','compare','compareAttribute' => 'password'],
-          ['smsCode','validateCode']
+          ['smsCode','validateCode'],
            // ['smsCode','compare','compareValue' => Yii::$app->session->get("tel_".$this->mobile)]
+            ['code','captcha','captchaAction' => 'user1/captcha']
         ];
     }
     public function validateCode($attribute, $params)
