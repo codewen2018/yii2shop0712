@@ -62,42 +62,26 @@ class MemberController extends \yii\web\Controller
                 if (\Yii::$app->security->validatePassword($model->password,$member->password_hash)){
                     //登录用户
                     \Yii::$app->user->login($member);
-
                     //处理购物车同步数据
                     $getCookie=$request->cookies;
-
                     if ($getCookie->has('cart')){
                         $carts=$getCookie->getValue('cart');
-
                         foreach ($carts as $goodsId=>$num){
-
-
-
                             $cart=Cart::findOne(['goods_id'=>$goodsId,'member_id'=>\Yii::$app->user->id]);
-
                             if ($cart){
-
                                 $cart->amount+=$num;
-
                                 $cart->save();
-
-
                             }else{
-
                                 $addCart=new Cart();
                                 $addCart->goods_id=$goodsId;
                                 $addCart->amount=$num;
                                 $addCart->member_id=\Yii::$app->user->id;
                                 $addCart->save();
                             }
-
-
                         }
-
                         //清空Cookie
                        $setCookie=\Yii::$app->response->cookies;
                        $setCookie->remove('cart');
-
                     }
 
                     return $this->redirect(['index']);

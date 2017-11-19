@@ -5,7 +5,7 @@
 */
 function changeCart(id,num) {
 
-	$.post('/home1/change-cart',{id:id,num:num,"_csrf-frontend":$("#csrf").val()},function (data) {
+	$.post('change-cart',{id:id,num:num,"_csrf-frontend":$("#csrf").val()},function (data) {
 		console.log(data);
     });
 }

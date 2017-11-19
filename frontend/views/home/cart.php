@@ -53,7 +53,7 @@
         <tbody>
         <input type="hidden" value="<?=Yii::$app->request->csrfToken?>" id="csrf">
 <?php foreach ($models as $model):?>
-        <tr>
+        <tr id="<?=$model['id']?>">
             <td class="col1">
                 <?=\yii\helpers\Html::a(\yii\helpers\Html::img($model['logo']),['detail','id'=>$model['id']])?>
                 <strong><?=\yii\helpers\Html::a($model['name'],['detail','id'=>$model['id']])?></strong></td>
