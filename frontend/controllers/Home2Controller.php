@@ -326,6 +326,7 @@ class Home2Controller extends BaseController
         }
 
         var_dump($result);
+        var_dump( $attributes['notify_url']);
     }
     public function actionOk(){
         $options=[
