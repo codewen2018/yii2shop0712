@@ -24,6 +24,7 @@ use EasyWeChat\Foundation\Application;
 class Home2Controller extends BaseController
 {
 
+    public $enableCsrfValidation=false;
 
     public function actionIndex()
     {
