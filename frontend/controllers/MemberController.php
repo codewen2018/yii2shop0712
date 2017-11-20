@@ -50,12 +50,11 @@ class MemberController extends \yii\web\Controller
         $model=new Member();
 
         $request=\Yii::$app->request;
+        $url=$request->get('backUrl')?$request->get('backUrl'):"index";
         if ($request->isPost){
-
             $model->load($request->post());
             //找到当前用户
             $member=Member::findOne(['username'=>$model]);
-
             //如果有用户
             if ($member){
             //判断密码
@@ -87,7 +86,8 @@ class MemberController extends \yii\web\Controller
 
                     (new \frontend\components\Cart())->synDb()->flush()->save();
 
-                    return $this->redirect(['index']);
+
+                    return $this->redirect([$url]);
 
                 }else{
 

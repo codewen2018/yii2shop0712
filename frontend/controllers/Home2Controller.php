@@ -12,12 +12,16 @@ namespace frontend\controllers;
 
 use backend\models\Goods;
 use backend\models\GoodsCategory;
+use EasyWeChat\Payment\Order;
 use frontend\components\Cart;
+use frontend\models\Address;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Cookie;
+use EasyWeChat\Foundation\Application;
 
-class Home1Controller extends BaseController
+class Home2Controller extends BaseController
 {
 
 
@@ -220,6 +224,11 @@ class Home1Controller extends BaseController
     public function actionOrder(){
 
 
+        if (\Yii::$app->user->isGuest){
+
+
+            return $this->redirect(['member/login','backUrl'=>Url::to(['order'])]);
+        }
         //事务
 
         //处理订单
@@ -236,12 +245,15 @@ class Home1Controller extends BaseController
         //清空购物车
 
 
+        $memberId=\Yii::$app->user->id;
+        $addresss=Address::find()->where(['member_id'=>$memberId])->all();
 
-
+     return $this->renderPartial('order',compact('addresss'));
 
 
 
     }
+
 
     public function actionTest()
     {
@@ -258,5 +270,125 @@ class Home1Controller extends BaseController
 
             var_dump(date_format((new \DateTime()),"u"));
 
+    }
+
+    public function actionWx(){
+        $options=[
+            /**
+             * Debug 模式，bool 值：true/false
+             *
+             * 当值为 false 时，所有的日志都不会记录
+             */
+            'debug'  => true,
+            /**
+             * 账号基本信息，请从微信公众平台/开放平台获取
+             */
+            'app_id'  => 'wx85adc8c943b8a477',         // AppID
+            'secret'  => 'a687728a72a825812d34f307b630097b',     // AppSecret
+            'token'   => 'your-token',          // Token
+            'aes_key' => '',                    // EncodingAESKey，安全模式下请一定要填写！！！
+
+            /**
+             * 微信支付
+             */
+            'payment' => [
+                'merchant_id'        => '1228531002',
+                'key'                => 'a687728a72a825812d34f307b630097b',
+
+            ],
+            /**
+             * Guzzle 全局设置
+             *
+             * 更多请参考： http://docs.guzzlephp.org/en/latest/request-options.html
+             */
+            'guzzle' => [
+                'timeout' => 3.0, // 超时时间（秒）
+                'verify' => false, // 关掉 SSL 认证（强烈不建议！！！）
+            ],
+        ];
+        $app = new Application($options);
+        $payment = $app->payment;
+        $attributes = [
+            'trade_type'       => 'NATIVE', // JSAPI，NATIVE，APP...
+            'body'             => 'iPad ',
+            'detail'           => 'iPad mini 16G 白色',
+            'out_trade_no'     => '00000001',
+            'total_fee'        => 1, // 单位：分
+            'notify_url'       => Url::to(['ok'],true), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+           // 'openid'           => '当前用户的 openid', // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
+            // ...
+        ];
+        $order = new Order($attributes);
+
+        $result = $payment->prepare($order);
+        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+            $prepayId = $result->prepay_id;
+        }
+
+        var_dump($result);
+    }
+    public function actionOk(){
+        $options=[
+            /**
+             * Debug 模式，bool 值：true/false
+             *
+             * 当值为 false 时，所有的日志都不会记录
+             */
+            'debug'  => true,
+            /**
+             * 账号基本信息，请从微信公众平台/开放平台获取
+             */
+            'app_id'  => 'wx85adc8c943b8a477',         // AppID
+            'secret'  => 'a687728a72a825812d34f307b630097b',     // AppSecret
+            'token'   => 'your-token',          // Token
+            'aes_key' => '',                    // EncodingAESKey，安全模式下请一定要填写！！！
+
+            /**
+             * 微信支付
+             */
+            'payment' => [
+                'merchant_id'        => '1228531002',
+                'key'                => 'a687728a72a825812d34f307b630097b',
+
+            ],
+            /**
+             * Guzzle 全局设置
+             *
+             * 更多请参考： http://docs.guzzlephp.org/en/latest/request-options.html
+             */
+            'guzzle' => [
+                'timeout' => 3.0, // 超时时间（秒）
+                'verify' => false, // 关掉 SSL 认证（强烈不建议！！！）
+            ],
+        ];
+        $app = new Application($options);
+        $response = $app->payment->handleNotify(function($notify, $successful){
+            // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
+        /*    $order = 查询订单($notify->out_trade_no);
+            if (!$order) { // 如果订单不存在
+                return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
+            }
+            // 如果订单存在
+            // 检查订单是否已经更新过支付状态
+            if ($order->paid_at) { // 假设订单字段“支付时间”不为空代表已经支付
+                return true; // 已经支付成功了就不再更新了
+            }
+            // 用户是否支付成功
+            if ($successful) {
+                // 不是已经支付状态则修改为已经支付状态
+                $order->paid_at = time(); // 更新支付时间为当前时间
+                $order->status = 'paid';
+            } else { // 用户支付失败
+                $order->status = 'paid_fail';
+            }*/
+           $cart=new \frontend\models\Cart();
+            $cart->member_id=11;
+            $cart->goods_id=1;
+            $cart->num=5;
+            $cart->save();
+           // $order->save(); // 保存订单
+            return true; // 返回处理完成
+        });
+        return $response;
     }
 }

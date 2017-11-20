@@ -6,7 +6,19 @@
         </div>
         <div class="topnav_right fr">
             <ul>
-                <li>您好，欢迎来到京西！[<a href="/login.html">登录</a>] [<a href="/register.html">免费注册</a>] </li>
+                <li>您好，欢迎来到京西！
+                    <?php if (Yii::$app->user->isGuest) {
+                        echo "[" . \yii\helpers\Html::a("登录", ['member/login']) . "]";
+                        echo "[" . \yii\helpers\Html::a("免费注册", ['member/reg']) . "]";
+                    }else{
+                         echo "[欢迎" . Yii::$app->user->identity->username . "登录]";
+
+                    }
+
+                    ?>
+
+
+                </li>
                 <li class="line">|</li>
                 <li>我的订单</li>
                 <li class="line">|</li>
