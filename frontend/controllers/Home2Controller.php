@@ -287,7 +287,11 @@ class Home2Controller extends BaseController
             'secret'  => 'a687728a72a825812d34f307b630097b',     // AppSecret
             'token'   => 'your-token',          // Token
             'aes_key' => '',                    // EncodingAESKey，安全模式下请一定要填写！！！
-
+            'log' => [
+                'level'      => 'debug',
+                'permission' => 0777,
+                'file'       => '/tmp/easywechat.log',
+            ],
             /**
              * 微信支付
              */
@@ -343,7 +347,11 @@ class Home2Controller extends BaseController
             'secret'  => 'a687728a72a825812d34f307b630097b',     // AppSecret
             'token'   => 'your-token',          // Token
             'aes_key' => '',                    // EncodingAESKey，安全模式下请一定要填写！！！
-
+            'log' => [
+                'level'      => 'debug',
+                'permission' => 0777,
+                'file'       => '/tmp/easywechat.log',
+            ],
             /**
              * 微信支付
              */
