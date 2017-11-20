@@ -312,7 +312,7 @@ class Home2Controller extends BaseController
             'trade_type'       => 'NATIVE', // JSAPI，NATIVE，APP...
             'body'             => 'iPad ',
             'detail'           => 'iPad mini 16G 白色',
-            'out_trade_no'     => '00000001',
+            'out_trade_no'     => time(),
             'total_fee'        => 1, // 单位：分
             'notify_url'       => Url::to(['ok'],true), // 支付结果通知网址，如果不设置则会使用配置里的默认地址
            // 'openid'           => '当前用户的 openid', // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
