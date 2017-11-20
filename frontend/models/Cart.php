@@ -28,7 +28,7 @@ class Cart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['goods_id', 'amount', 'member_id'], 'integer'],
+            [['goods_id', 'num', 'member_id'], 'integer'],
         ];
     }
 
@@ -40,7 +40,7 @@ class Cart extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'goods_id' => 'Goods ID',
-            'amount' => 'Amount',
+            'num' => 'Amount',
             'member_id' => 'Member ID',
         ];
     }

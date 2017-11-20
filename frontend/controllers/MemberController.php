@@ -63,7 +63,7 @@ class MemberController extends \yii\web\Controller
                     //登录用户
                     \Yii::$app->user->login($member);
                     //处理购物车同步数据
-                    $getCookie=$request->cookies;
+                   /* $getCookie=$request->cookies;
                     if ($getCookie->has('cart')){
                         $carts=$getCookie->getValue('cart');
                         foreach ($carts as $goodsId=>$num){
@@ -82,7 +82,10 @@ class MemberController extends \yii\web\Controller
                         //清空Cookie
                        $setCookie=\Yii::$app->response->cookies;
                        $setCookie->remove('cart');
-                    }
+                    }*/
+
+
+                    (new \frontend\components\Cart())->synDb()->flush()->save();
 
                     return $this->redirect(['index']);
 

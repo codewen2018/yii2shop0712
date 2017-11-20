@@ -12,6 +12,10 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'cart'=>[
+          'class'=>\frontend\components\Cart::className(),
+            'expireTime'=>3600*24*7,
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
