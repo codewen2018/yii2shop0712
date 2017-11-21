@@ -14,6 +14,7 @@ use EasyWeChat\Foundation\Application;
 
 class OrderController extends BaseController
 {
+    public $enableCsrfValidation=false;
     public function actionIndex()
     {
         //1. 未登录跳登录
