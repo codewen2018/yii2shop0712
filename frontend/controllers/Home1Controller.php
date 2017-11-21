@@ -14,6 +14,7 @@ use backend\models\Goods;
 use backend\models\GoodsCategory;
 use frontend\components\Cart;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Cookie;
 
@@ -246,7 +247,7 @@ class Home1Controller extends BaseController
     public function actionTest()
     {
 
-        $getCookie = \Yii::$app->request->cookies;
+       /* $getCookie = \Yii::$app->request->cookies;
 
 
         //var_dump($getCookie->getValue('cart'));
@@ -256,7 +257,9 @@ class Home1Controller extends BaseController
             list($usec, $sec) = explode(" ", microtime());
             $msec=round($usec*1000);
 
-            var_dump(date_format((new \DateTime()),"u"));
+            var_dump(date_format((new \DateTime()),"u"));*/
+
+       echo  Url::to(['order/ok'],true);
 
     }
 }
