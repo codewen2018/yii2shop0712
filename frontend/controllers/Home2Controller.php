@@ -401,4 +401,8 @@ class Home2Controller extends BaseController
         });
         return $response;
     }
+    public function actionTest1(){
+
+        var_dump(\Yii::$app->sphinx);
+    }
 }

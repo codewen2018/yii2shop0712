@@ -116,6 +116,29 @@ class MemberController extends \yii\web\Controller
      */
     public function actionSms(){
 
+        //1. 限制同一个手机号一天之内只能发3条
+
+        // 1.1 数据入数据库
+        // 1.2 如果数据库没有这个条手机的信息,则添加一条信息
+        // 1.3 如果数据库中有这个手机信息 那么还要判断日期是不是当天的,则修改date(当天) 和times 1
+        // 1.3.1 如果日期是当天,则判断times是否大于等于3,如果大于等于3,则提示已超过限额明天再发,如果没有大于等于3则给times加1
+        /*
+         *   tel          times       date       send_time()      code
+         *  1389999          3       20171123      21555454945    1234
+         *
+         *
+         *
+         */
+
+
+        //2. 同一个手机号发送验证码间隔时间不能低于1分钟
+
+        //1234 1234     1234  1234
+
+
+        //3. 解决验证不一致
+        //3.1 判断当前手机号发送时间低于5分钟不随机验证,直接发上次的验证
+
        // $this->enableCsrfValidation=false;
         //接收参数
         $mobile=\Yii::$app->request->post('mobile');
